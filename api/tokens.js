@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { middleware } = require('./auth');
 
-const DB_PATH = path.join(__dirname, '..', 'database.json');
+const DB_PATH = path.join(__dirname, 'data', 'database.json');
 
 function readDB(){
   try{
