@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { sign } = require('./auth');
 
-const ACC_PATH = path.join(process.cwd(), 'accounts.json');
+const ACC_PATH = path.join(__dirname, 'data', 'accounts.json');
 
 function readAccounts(){
   try{
