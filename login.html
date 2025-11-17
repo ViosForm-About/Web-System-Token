@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Login - Syaa Bot AddToken</title>
+<style>
+:root{
+  --bg1:#1a1a2e;
+  --bg2:#16213e;
+  --primary:#4cc9f0;
+  --accent:#4361ee;
+  --secondary:#f72585;
+  --purple:#7209b7;
+  --glass: rgba(255,255,255,0.05);
+  --glass-2: rgba(255,255,255,0.03);
+  --txt:#e6eef8;
+  --muted:#9aa6bf;
+  --success:#4caf50;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  background: linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--txt);
+  -webkit-font-smoothing:antialiased;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+/* card */
+.login-card{
+  width:100%;
+  max-width:420px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border-radius:14px;
+  padding:28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.04);
+  position:relative;
+  overflow:hidden;
+}
+
+/* header marquee small */
+.marquee{
+  width:100%;
+  overflow:hidden;
+  white-space:nowrap;
+  box-sizing:border-box;
+  border-radius:10px;
+  margin-bottom:14px;
+  padding:8px 10px;
+  background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.02);
+}
+.marquee > span{
+  display:inline-block;
+  padding-left:100%;
+  animation:marq 12s linear infinite;
+}
+@keyframes marq{
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* form */
+.h1{
+  font-size:20px;
+  margin:6px 0 12px 0;
+  letter-spacing:0.6px;
+}
+.form-row{margin-bottom:12px}
+.input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.04);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  color:var(--txt);
+  outline:none;
+  font-size:14px;
+}
+.input::placeholder{color:var(--muted)}
+.btn{
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  letter-spacing:0.4px;
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+  color:#041022;
+  transform:translateZ(0);
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.btn:hover{ transform:translateY(-3px); box-shadow:0 8px 30px rgba(67,97,238,0.18) }
+
+.helper{
+  margin-top:10px;
+  font-size:13px;
+  color:var(--muted);
+  text-align:center;
+}
+
+/* error */
+.error{
+  padding:10px;
+  background: rgba(247,37,133,0.08);
+  border: 1px solid rgba(247,37,133,0.14);
+  color:var(--secondary);
+  border-radius:8px;
+  margin-bottom:10px;
+  display:none;
+}
+
+/* small footer */
+.foot{
+  margin-top:16px;
+  font-size:12px;
+  color:var(--muted);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.logo .dot{
+  width:12px;height:12px;border-radius:4px;background:linear-gradient(180deg,var(--secondary),var(--purple));
+  box-shadow:0 6px 20px rgba(247,37,133,0.2);
+}
+.login-card .pulse{
+  position:absolute;
+  right:14px;
+  top:14px;
+  width:36px;height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  background:linear-gradient(90deg,var(--accent),var(--primary));
+  box-shadow:0 6px 24px rgba(67,97,238,0.16);
+  animation:pulse 2s ease-in-out infinite;
+  font-size:12px;
+  font-weight:700;
+  color:#041022;
+}
+@keyframes pulse{
+  0%{ transform:scale(1) rotate(0deg) }
+  50%{ transform:scale(1.06) rotate(3deg) }
+  100%{ transform:scale(1) rotate(0deg) }
+}
+
+/* responsive */
+@media(max-width:480px){
+  .login-card{padding:18px}
+  .h1{font-size:18px}
+}
+</style>
+</head>
+<body>
+  <div class="login-card" role="main">
+    <div class="marquee"><span>Website AddToken OssOn — Please login to manage tokens — Website AddToken OssOn —</span></div>
+    <div class="pulse">ON</div>
+    <div class="h1">Login to AddToken Manager</div>
+
+    <div id="error" class="error" role="alert"></div>
+
+    <div class="form-row">
+      <input id="username" class="input" placeholder="Username" autocomplete="username">
+    </div>
+    <div class="form-row">
+      <input id="password" type="password" class="input" placeholder="Password" autocomplete="current-password">
+    </div>
+    <div class="form-row">
+      <button id="loginBtn" class="btn">Login</button>
+    </div>
+
+    <div class="helper">No registration — accounts are managed manually.</div>
+
+    <div class="foot">
+      <div class="logo"><div class="dot"></div><div style="font-size:12px">ICE COSMOS</div></div>
+      <div style="font-size:12px">v1.0</div>
+    </div>
+  </div>
+
+<script src="/script.js"></script>
+<script>
+/* Auto-redirect if already logged in */
+(async function(){
+  const token = localStorage.getItem('syaa_jwt');
+  if(token){
+    // optional quick verify by calling /api/tokens
+    try{
+      const r = await fetch('/api/tokens', {headers:{'Authorization':'Bearer '+token}});
+      if(r.ok) { location.href = '/dashboard'; return; }
+    }catch(e){}
+  }
+})();
+document.getElementById('loginBtn').addEventListener('click', async ()=>{
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value.trim();
+  const errEl = document.getElementById('error');
+  errEl.style.display='none';
+  if(!u || !p){ errEl.textContent='Username & password wajib diisi'; errEl.style.display='block'; return; }
+  try{
+    const res = await fetch('/api/login', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+    const data = await res.json();
+    if(!res.ok || !data.success){
+      errEl.textContent = data.message || 'Login gagal';
+      errEl.style.display='block';
+      return;
+    }
+    localStorage.setItem('syaa_jwt', data.token);
+    localStorage.setItem('syaa_user', JSON.stringify(data.user));
+    location.href = '/dashboard';
+  }catch(err){
+    errEl.textContent = 'Terjadi kesalahan jaringan';
+    errEl.style.display='block';
+  }
+});
+
+/* allow Enter key */
+document.querySelectorAll('.input').forEach(el=>{
+  el.addEventListener('keydown', (e)=>{ if(e.key==='Enter') document.getElementById('loginBtn').click(); });
+});
+</script>
+</body>
+</html>
