@@ -1,26 +1,25 @@
 const jwt = require('jsonwebtoken');
-const fs = require('fs');
-const path = require('path');
 
-const JWT_SECRET = 'syaa-bot-secret-key-2024';
-const ACCOUNTS_FILE = path.join(process.cwd(), 'data', 'accounts.json');
+const JWT_SECRET = process.env.JWT_SECRET || 'syaa-bot-secret-key-2024';
 
-// Baca data akun
-function readAccounts() {
-  try {
-    const data = fs.readFileSync(ACCOUNTS_FILE, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    return { owners: [], users: [] };
-  }
+// In-memory storage untuk demo (ganti dengan database di production)
+const accounts = {
+  owners: [
+    { id: 1, username: 'owner1', password: 'password123', role: 'owner' },
+    { id: 2, username: 'owner2', password: 'password123', role: 'owner' }
+  ],
+  users: [
+    { id: 3, username: 'user1', password: 'password123', role: 'user' },
+    { id: 4, username: 'user2', password: 'password123', role: 'user' }
+  ]
+};
+
+let tokens = []; // In-memory tokens storage
+
+function verifyPassword(inputPassword, storedPassword) {
+  return inputPassword === storedPassword; // Simplified for demo
 }
 
-// Verifikasi password
-function verifyPassword(inputPassword, storedHash) {
-  return inputPassword === 'password123'; // Simplified for demo
-}
-
-// Generate JWT Token
 function generateToken(user) {
   return jwt.sign(
     { 
@@ -33,7 +32,6 @@ function generateToken(user) {
   );
 }
 
-// Verify JWT Token
 function verifyToken(token) {
   try {
     return jwt.verify(token, JWT_SECRET);
@@ -42,7 +40,6 @@ function verifyToken(token) {
   }
 }
 
-// Middleware auth
 function authenticate(req, res, next) {
   const token = req.headers.authorization?.replace('Bearer ', '');
   
@@ -60,7 +57,8 @@ function authenticate(req, res, next) {
 }
 
 module.exports = {
-  readAccounts,
+  accounts,
+  tokens,
   verifyPassword,
   generateToken,
   verifyToken,
