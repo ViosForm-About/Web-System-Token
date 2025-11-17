@@ -1,6 +1,16 @@
-const { readAccounts, verifyPassword, generateToken } = require('./auth');
+const { accounts, verifyPassword, generateToken } = require('./auth');
 
 module.exports = async (req, res) => {
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -15,8 +25,6 @@ module.exports = async (req, res) => {
       });
     }
 
-    const accounts = readAccounts();
-    
     // Cari user di owners atau users
     let user = accounts.owners.find(acc => acc.username === username);
     if (!user) {
