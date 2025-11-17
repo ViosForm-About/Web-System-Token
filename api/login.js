@@ -1,61 +1,51 @@
-const { accounts, verifyPassword, generateToken } = require('./auth');
+// api/login.js
+const fs = require('fs');
+const path = require('path');
+const { sign } = require('./auth');
+
+const ACC_PATH = path.join(__dirname, '..', 'accounts.json');
+
+function readAccounts(){
+  try{
+    const txt = fs.readFileSync(ACC_PATH, 'utf8');
+    return JSON.parse(txt);
+  }catch(e){
+    return [];
+  }
+}
 
 module.exports = async (req, res) => {
-  // Set CORS headers
-  res.setHeader('Access-Control-Allow-Credentials', true);
+  // Enable CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if(req.method === 'OPTIONS'){ res.status(200).send('ok'); return; }
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+  if(req.method !== 'POST'){
+    res.status(405).json({ success:false, message:'Method not allowed' });
+    return;
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  let body = req.body;
+  // In Vercel, req.body may be parsed already; else parse
+  if(!body){
+    try { body = JSON.parse(await new Promise(r=>{ let s=''; req.on('data',c=>s+=c); req.on('end',()=>r(s)); })); }catch(e){}
   }
 
-  try {
-    const { username, password } = req.body;
-    
-    if (!username || !password) {
-      return res.status(400).json({ 
-        success: false, 
-        message: 'Username dan password harus diisi' 
-      });
-    }
-
-    // Cari user di owners atau users
-    let user = accounts.owners.find(acc => acc.username === username);
-    if (!user) {
-      user = accounts.users.find(acc => acc.username === username);
-    }
-    
-    if (!user || !verifyPassword(password, user.password)) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'Username atau password salah' 
-      });
-    }
-
-    const token = generateToken(user);
-    
-    res.status(200).json({
-      success: true,
-      message: 'Login berhasil',
-      token: token,
-      user: {
-        id: user.id,
-        username: user.username,
-        role: user.role
-      }
-    });
-    
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Terjadi kesalahan server' 
-    });
+  const username = (body && body.username) || '';
+  const password = (body && body.password) || '';
+  if(!username || !password){
+    res.status(400).json({ success:false, message:'Username & password required' });
+    return;
   }
+
+  const accounts = readAccounts();
+  const user = accounts.find(a => a.username === username && a.password === password);
+  if(!user){
+    res.status(401).json({ success:false, message:'Invalid username or password' });
+    return;
+  }
+
+  // create token
+  const token = sign({ username: user.username, role: user.role });
+  res.status(200).json({ success:true, token, user: { username: user.username, role: user.role } });
 };
