@@ -1,7 +1,7 @@
 // api/auth.js
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'syaa_secret_change_me';
+const JWT_SECRET = process.env.JWT_SECRET || 'zYxIk6dZQJaBa0U8JGaSPLFFTDejo1xN';
 
 module.exports = {
   sign(payload, opts = {}) {
