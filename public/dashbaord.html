@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Syaa Bot Token Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dashboard-page">
+    <div class="dashboard-container">
+        <!-- Header dengan teks berjalan -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="marquee-container">
+                    <div class="marquee">
+                        <span>Website AddToken OssOn</span>
+                    </div>
+                </div>
+                
+                <div class="header-block">
+                    <div class="block-animation">
+                        <div class="block">🛡️ BLOCK</div>
+                    </div>
+                    <div class="scrolling-text-container">
+                        <div class="scrolling-text">
+                            <span>Web - Token Oss</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="user-info">
+                <span id="userWelcome">Welcome, </span>
+                <button id="logoutBtn" class="logout-btn">🚪 Logout</button>
+            </div>
+
+            <div class="terminal-container">
+                <div class="terminal-header">
+                    <div class="terminal-title">
+                        <span>📋 Terminal Token Manager</span>
+                        <span class="token-count" id="tokenCount">0 tokens</span>
+                    </div>
+                    <button id="addTokenBtn" class="add-btn">➕ Add Token</button>
+                </div>
+
+                <div class="terminal-body">
+                    <div class="token-table-container">
+                        <table class="token-table">
+                            <thead>
+                                <tr>
+                                    <th width="60">#</th>
+                                    <th>🔑 Token Telegram Bot</th>
+                                    <th width="120">Dibuat Oleh</th>
+                                    <th width="100">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tokenList">
+                                <!-- Token list akan dimuat di sini -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div id="emptyState" class="empty-state">
+                        <p>📭 Belum ada token</p>
+                        <p>Klik "Add Token" untuk menambahkan token Telegram Bot pertama Anda</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Add Token -->
+    <div id="tokenModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>➕ Tambah Token Telegram Bot Baru</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="tokenForm">
+                    <div class="form-group">
+                        <label for="tokenInput">🔑 Token Bot Telegram</label>
+                        <input type="text" id="tokenInput" name="token" 
+                               placeholder="Contoh: 1234567890:ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghi" 
+                               required>
+                        <small class="help-text">
+                            Dapatkan token dari @BotFather di Telegram
+                        </small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn" id="cancelBtn">Batal</button>
+                        <button type="submit" class="submit-btn">
+                            <span class="btn-text">💾 Simpan Token</span>
+                            <span class="btn-loading" style="display: none;">⏳ Menyimpan...</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

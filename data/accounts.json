@@ -1,0 +1,30 @@
+{
+  "owners": [
+    {
+      "id": 1,
+      "username": "owner1",
+      "password": "ThisAdminOwnerVerbale",
+      "role": "owner"
+    },
+    {
+      "id": 2,
+      "username": "owner2",
+      "password": "$2a$10$8K1p/a0dRTlB0.KQ3J5V5e.G0ZQkQJf5J5Q5J5Q5J5Q5J5Q5J5Q5J5",
+      "role": "owner"
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "user1",
+      "password": "$2a$10$8K1p/a0dRTlB0.KQ3J5V5e.G0ZQkQJf5J5Q5J5Q5J5Q5J5Q5J5Q5J5",
+      "role": "user"
+    },
+    {
+      "id": 2,
+      "username": "user2",
+      "password": "$2a$10$8K1p/a0dRTlB0.KQ3J5V5e.G0ZQkQJf5J5Q5J5Q5J5Q5J5Q5J5Q5J5",
+      "role": "user"
+    }
+  ]
+}

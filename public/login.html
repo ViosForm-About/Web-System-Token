@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Syaa Bot Token Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-box">
+            <!-- Hanya Teks Sederhana -->
+            <div class="login-header">
+                <h1>🤖 Syaa Bot</h1>
+                <p>Telegram Token Manager</p>
+            </div>
+
+            <!-- Form Login Sederhana -->
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <input type="text" id="username" name="username" required 
+                           placeholder="Username" class="simple-input">
+                </div>
+
+                <div class="form-group">
+                    <input type="password" id="password" name="password" required 
+                           placeholder="Password" class="simple-input">
+                </div>
+
+                <button type="submit" class="login-btn">
+                    <span class="btn-text">Login</span>
+                    <span class="btn-loading" style="display: none;">Loading...</span>
+                </button>
+            </form>
+
+            <!-- Hanya Message Box -->
+            <div id="message" class="message"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

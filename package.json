@@ -1,0 +1,17 @@
+{
+  "name": "syaa-bot-addtoken",
+  "version": "1.0.0",
+  "description": "Telegram Bot Token Manager",
+  "main": "public/login.html",
+  "scripts": {
+    "dev": "vercel dev",
+    "start": "vercel start"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "bcryptjs": "^2.4.3"
+  },
+  "devDependencies": {
+    "vercel": "^28.0.0"
+  }
+}
