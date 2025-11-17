@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Dashboard - Syaa Bot AddToken</title>
+<style>
+:root{
+  --bg1:#1a1a2e;
+  --bg2:#16213e;
+  --primary:#4cc9f0;
+  --accent:#4361ee;
+  --secondary:#f72585;
+  --purple:#7209b7;
+  --glass: rgba(255,255,255,0.04);
+  --muted:#9aa6bf;
+  --txt:#e6eef8;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Inter,system-ui,Arial;
+  background: linear-gradient(180deg,var(--bg1),var(--bg2));
+  color:var(--txt);
+  -webkit-font-smoothing:antialiased;
+  padding:18px;
+}
+
+/* header */
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:18px;
+}
+.brand{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+.brand .logo{
+  width:48px;height:48px;border-radius:12px;
+  background:linear-gradient(135deg,var(--secondary),var(--purple));
+  display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;
+  box-shadow:0 10px 30px rgba(247,37,133,0.12);
+}
+.marquee{
+  overflow:hidden; white-space:nowrap; border-radius:8px;
+  padding:8px 10px; margin-left:6px; font-weight:700;
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.02);
+}
+.marquee > span{ display:inline-block; padding-left:100%; animation:marq 14s linear infinite; color:var(--primary)}
+@keyframes marq{ 0%{transform:translateX(0)} 100%{transform:translateX(-100%)} }
+
+/* layout */
+.container{
+  display:grid;
+  grid-template-columns: 1fr 380px;
+  gap:18px;
+}
+.left{
+  min-height:60vh;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:12px;
+  padding:14px;
+  border:1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+}
+
+/* right panel */
+.right{
+  min-height:60vh;
+  border-radius:12px;
+  padding:14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.03);
+}
+
+/* block element */
+.block{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border-radius:10px;
+  background: linear-gradient(90deg, rgba(67,97,238,0.08), rgba(76,201,240,0.03));
+  margin-bottom:12px;
+  animation:pop .9s ease;
+}
+.block .chip{
+  width:84px;height:64px;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--primary));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;color:#041022;
+  animation:pulse 1.8s infinite;
+}
+@keyframes pop{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:none}}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.05)}100%{transform:scale(1)}}
+
+/* scrolling info text */
+.scroll-info{
+  overflow:hidden;
+  white-space:nowrap;
+  padding:8px 10px;
+  border-radius:8px;
+  border:1px dashed rgba(255,255,255,0.03);
+  margin-bottom:12px;
+  color:var(--muted);
+}
+.scroll-info > span{
+  display:inline-block; padding-left:100%; animation:scrollInfo 18s linear infinite;
+}
+@keyframes scrollInfo{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+
+/* terminal style */
+.terminal{
+  background:#070617;
+  padding:12px;
+  border-radius:10px;
+  color:#cbe7ff;
+  font-family: "Source Code Pro", monospace;
+  font-size:13px;
+  min-height:220px;
+  max-height:420px;
+  overflow:auto;
+  border:1px solid rgba(255,255,255,0.04);
+}
+
+/* table */
+.table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:12px;
+}
+.table th, .table td{
+  text-align:left;
+  padding:10px 8px;
+  border-bottom:1px solid rgba(255,255,255,0.02);
+  font-size:13px;
+}
+.table th{ color:var(--muted); font-weight:600; font-size:12px }
+.token-cell{ font-family: monospace; letter-spacing:0.6px }
+
+/* buttons */
+.row-actions{ display:flex; gap:8px }
+.btn{ padding:8px 12px; border-radius:8px; border:none; cursor:pointer; font-weight:700 }
+.btn.primary{ background:linear-gradient(90deg,var(--primary),var(--accent)); color:#041022 }
+.btn.ghost{ background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--txt) }
+.btn.danger{ background:linear-gradient(90deg,#ff6b6b,#f72585); color:#fff }
+
+/* user info */
+.userinfo{ display:flex; align-items:center; gap:10px }
+.avatar{ width:42px;height:42px;border-radius:10px;background:linear-gradient(90deg,var(--secondary),var(--purple));
+  display:flex;align-items:center;justify-content:center;font-weight:800;color:white }
+
+/* modal */
+.modal-backdrop{
+  position:fixed; inset:0; display:none; align-items:center; justify-content:center;
+  background: rgba(2,2,8,0.6); z-index:1200;
+}
+.modal{
+  width:100%; max-width:520px; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.03);
+  transform: scale(.96); opacity:0; transition: all .18s ease;
+}
+.modal.show{ transform:scale(1); opacity:1 }
+
+/* form controls in modal */
+.input{ width:100%; padding:10px 12px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.04); color:var(--txt) }
+.form-row{ margin-bottom:12px }
+
+/* small */
+.small{ font-size:12px; color:var(--muted) }
+
+/* responsive */
+@media(max-width:980px){
+  .container{ grid-template-columns: 1fr }
+  .right{ order:2 }
+}
+</style>
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <div class="logo">A</div>
+      <div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <div class="marquee" style="width:260px"><span>Website AddToken OssOn • Manage tokens securely •</span></div>
+          <div class="small">Dashboard</div>
+        </div>
+        <div class="small">Manage Telegram Bot tokens</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <div id="userWrap" class="userinfo">
+        <div class="avatar" id="avatarTxt">O</div>
+        <div>
+          <div id="usernameTxt" style="font-weight:700">owner1</div>
+          <div id="roleTxt" class="small">owner</div>
+        </div>
+      </div>
+      <button id="logoutBtn" class="btn ghost">Logout</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="left">
+      <div class="block">
+        <div class="chip">BLOCK</div>
+        <div>
+          <div style="font-weight:700">BLOCK</div>
+          <div class="small">Status: <span id="statusTxt">Online</span></div>
+        </div>
+      </div>
+
+      <div class="scroll-info"><span>Informasi: Sistem token berjalan. Tambahkan token bot Telegram. Hati-hati dengan token — tampil sebagian untuk keamanan.</span></div>
+
+      <div class="terminal" id="term">
+        Loading tokens...
+      </div>
+
+      <table class="table" id="tokenTable" aria-live="polite" style="margin-top:14px">
+        <thead>
+          <tr><th style="width:40px">No</th><th>Token</th><th style="width:140px">Action</th></tr>
+        </thead>
+        <tbody id="tokenBody">
+        </tbody>
+      </table>
+    </section>
+
+    <aside class="right">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <div>
+          <div style="font-weight:800">Add Token</div>
+          <div class="small">Tambah token baru untuk bot</div>
+        </div>
+        <div>
+          <button id="refreshBtn" class="btn ghost">Refresh</button>
+          <button id="openAddBtn" class="btn primary">+ Add Token</button>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <div style="font-weight:700;margin-bottom:6px">Quick Info</div>
+        <div class="small">• Tokens are masked to show only half of the string for safety.<br>• Only users with valid JWT can access API.</div>
+      </div>
+
+      <div style="margin-top:18px">
+        <div style="font-weight:700;margin-bottom:6px">Actions</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button id="downloadBtn" class="btn ghost">Download JSON</button>
+          <button id="clearBtn" class="btn danger">Delete All (owner only)</button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- modal -->
+  <div id="modalBack" class="modal-backdrop" aria-hidden="true">
+    <div id="modal" class="modal" role="dialog" aria-modal="true">
+      <h3 style="margin-top:0">Add New Token</h3>
+      <div class="form-row">
+        <label class="small">Token</label>
+        <input id="newToken" class="input" placeholder="1234567890:ABCdefGHI..." />
+      </div>
+      <div class="form-row">
+        <label class="small">Created By</label>
+        <input id="createdBy" class="input" disabled />
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:8px">
+        <button id="closeModal" class="btn ghost">Cancel</button>
+        <button id="saveToken" class="btn primary">Save Token</button>
+      </div>
+      <div id="modalErr" class="small" style="color:var(--secondary);margin-top:8px;display:none"></div>
+    </div>
+  </div>
+
+<script src="/script.js"></script>
+<script>
+/* simple check: must be logged in */
+(async function(){
+  const token = localStorage.getItem('syaa_jwt');
+  const user = JSON.parse(localStorage.getItem('syaa_user')||'null');
+  if(!token || !user){ location.href='/login'; return; }
+  document.getElementById('usernameTxt').textContent = user.username;
+  document.getElementById('roleTxt').textContent = user.role;
+  document.getElementById('avatarTxt').textContent = user.username.charAt(0).toUpperCase();
+  document.getElementById('createdBy').value = user.username;
+
+  // load tokens
+  await window.syaa_loadTokens();
+})();
+
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  localStorage.removeItem('syaa_jwt'); localStorage.removeItem('syaa_user');
+  location.href='/login';
+});
+document.getElementById('openAddBtn').addEventListener('click', ()=> {
+  document.getElementById('modalBack').style.display='flex';
+  setTimeout(()=> { document.getElementById('modal').classList.add('show'); }, 40);
+});
+document.getElementById('closeModal').addEventListener('click', ()=> {
+  document.getElementById('modal').classList.remove('show');
+  setTimeout(()=> document.getElementById('modalBack').style.display='none', 200);
+});
+document.getElementById('refreshBtn').addEventListener('click', ()=> window.syaa_loadTokens());
+document.getElementById('saveToken').addEventListener('click', async ()=>{
+  const val = document.getElementById('newToken').value.trim();
+  const errEl = document.getElementById('modalErr');
+  errEl.style.display='none';
+  if(!val){ errEl.textContent='Token wajib diisi'; errEl.style.display='block'; return; }
+  try{
+    await window.syaa_addToken(val);
+    document.getElementById('newToken').value='';
+    document.getElementById('modal').classList.remove('show');
+    setTimeout(()=> document.getElementById('modalBack').style.display='none', 200);
+  }catch(e){
+    errEl.textContent = e.message || 'Gagal menambahkan token';
+    errEl.style.display='block';
+  }
+});
+
+document.getElementById('downloadBtn').addEventListener('click', async ()=>{
+  try{
+    const data = await window.syaa_api('/api/tokens');
+    const blob = new Blob([JSON.stringify(data.tokens, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'database.json'; a.click();
+    URL.revokeObjectURL(url);
+  }catch(e){
+    alert('Gagal download');
+  }
+});
+
+document.getElementById('clearBtn').addEventListener('click', async ()=>{
+  const user = JSON.parse(localStorage.getItem('syaa_user')||'null');
+  if(!user || user.role !== 'owner'){ alert('Hanya owner yang bisa menghapus semua token'); return; }
+  if(!confirm('Hapus semua token?')) return;
+  try{
+    const toks = await window.syaa_api('/api/tokens');
+    for(const t of toks.tokens){
+      await window.syaa_api('/api/tokens?id='+t.id, { method:'DELETE' });
+    }
+    await window.syaa_loadTokens();
+    alert('Semua token dihapus');
+  }catch(e){
+    alert('Gagal menghapus semua token');
+  }
+});
+
+/* close modal when clicking backdrop */
+document.getElementById('modalBack').addEventListener('click', function(e){
+  if(e.target === this){
+    document.getElementById('modal').classList.remove('show');
+    setTimeout(()=> this.style.display='none', 200);
+  }
+});
+</script>
+</body>
+</html>
